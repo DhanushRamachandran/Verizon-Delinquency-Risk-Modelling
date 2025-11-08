@@ -110,4 +110,4 @@ if __name__=="__main__":
     # univariate analysis
     # money loss because of delinquency
     df["money_loss"] = df["device_cost"] - df["down_payment"]
-    
+    df["delinquency_90_days"] = df["delinquency_90_days"].map({"Performing/paid off":1,"90+ delinquent/default":0})
