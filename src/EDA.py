@@ -10,7 +10,6 @@ def analyze_quality(data: pd.DataFrame, quality_column: str) -> None:
     Parameters:
     data (pd.DataFrame): The input data as a pandas DataFrame.
     quality_column (str): The name of the column representing quality.
-
     Returns:
     None
     """

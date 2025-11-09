@@ -8,10 +8,14 @@ from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.utils import resample
 import math
 
+
 X_train = pd.read_csv("data/X_train.csv")
 X_test = pd.read_csv("data/X_test.csv")
 y_train = pd.read_csv("data/y_train.csv").values.ravel()
 y_test = pd.read_csv("data/y_test.csv").values.ravel()
+X_train = X_train[["cred_score"]]
+X_test = X_test[["cred_score"]]
+
 
 # build and eval logistic regression model
 lr = LogisticRegression( prenalty="l2",max_iter=1000)
@@ -26,6 +30,10 @@ lr_probs = lr.predict_proba(X_test)[:, 1]
 
 lr_auc = roc_auc_score(y_test,lr_probs)
 print(f"Logistic Regression AUC: {lr_auc:.3f}")
+# save model
+lr_model_path = "model/logistic_regression_model.pkl"
+import joblib
+joblib.dump(lr, lr_model_path)
 # ------------------------------------------------------------------
 
 # build and eval random forest model
@@ -55,6 +63,12 @@ rf_probs = best_rf.predict_proba(X_test)[:, 1]
 rf_auc = roc_auc_score(y_test, rf_probs)
 
 print(f"Random Forest AUC: {rf_auc:.3f}")
+
+# save model
+rf_model_path = "model/random_forest_model.pkl"
+import joblib
+joblib.dump(best_rf, rf_model_path)
+
 
 # -----------------------------------------------------
 from xgboost import XGBClassifier 
@@ -104,3 +118,8 @@ print(confusion_matrix(y_test, y_pred_xgb))
 xgb_probs = best_xgb.predict_proba(X_test)[:, 1]
 xgb_auc = roc_auc_score(y_test, xgb_probs)
 print(f"XGBoost AUC: {xgb_auc:.3f}") 
+
+#save model
+xgb_model_path = "model/xgboost_model.pkl"
+import joblib
+joblib.dump(best_xgb, xgb_model_path)
